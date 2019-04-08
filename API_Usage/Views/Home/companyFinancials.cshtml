@@ -1,0 +1,75 @@
+﻿@model API_Usage.Models.financialData
+
+@{
+    ViewData["Title"] = "companyFinancials";
+}
+
+<h2>companyFinancials</h2>
+
+<form asp-controller="Home" asp-action="financials" method="get">
+    <select name="symbol">
+        @foreach (var company in Model.company)
+        {
+            <option value=@company.symbol selected>@company.name</option>
+            
+        }
+    </select>
+    <input type="submit" value="Submit" />
+</form>
+<table class="table">
+    <thead>
+        <tr id="title" data-sec="@ViewData["Secto"]">
+        <tr>
+            <th>Gross Profit</th>
+            <th>Operating Revenue</th>
+            <th>Total Revenue</th>
+            <th>Net Income</th>
+            <th>Current Cash</th>
+            <th>Total Assets</th>
+            <th>Total Liabilities</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.finance.financials!=null)
+        {
+        @foreach (var itemI in Model.finance.financials)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => itemI.grossProfit)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => itemI.operatingRevenue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemI.totalRevenue)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => itemI.netIncome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemI.currentCash)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => itemI.totalAssets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemI.totalLiabilities)
+                </td>
+            </tr>
+        }
+        }
+        <tr>
+            <td>
+                <a id="dbopt" asp-controller="Home" asp-action="PopulateFinancial"><img src="~/img/button_save-data.png" /></a>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+<script>
+    alertDbSave(@ViewBag.dbSuccessChart);
+
+</script>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<API_Usage.Models.GainersList>
+
+@{
+    ViewData["Title"] = "Gainers";
+}
+
+<h2>Top_Gainers</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                   Symbol
+                </th>
+                <th>
+                    Company Name
+                </th>
+                
+                <th>
+                   Sector
+                </th>
+                
+                <th>
+                   Open
+                </th>
+                
+                <th>
+                  Close
+                </th>
+               
+                <th>
+                   High
+                </th>
+                <th>
+                    Low
+                </th>
+                <th>
+                    Latest Price
+                </th>
+                
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.symbol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.companyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sector)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.open)
+                </td>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.close)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.high)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.low)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.latestPrice)
+                </td>
+                
+
+            </tr>
+        }
+        <tr>
+            <td>
+                <a id="dbopt" asp-controller="Home" asp-action="PopulateGainer"><img src="~/img/button_save-data.png" /></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<script>
+    alertDbSave(@ViewBag.dbSuccessComp);
+</script>

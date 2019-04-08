@@ -1,0 +1,72 @@
+﻿@model IEnumerable<API_Usage.Models.outputModel>
+
+
+@{
+    ViewData["Title"] = "Buy Or Sell Stocks";
+}
+
+<h2>BuyOrSell</h2>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Company Name
+                </th>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Close
+                </th>
+                <th>
+                    Value
+                </th>
+                <th>
+                    Chart
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr class="row" data-symbol="@item.symbol">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.companyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.close)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.value)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <a id="dbopt" asp-controller="Home" asp-action="PopulateStock"><img src="~/img/button_save-data.png" /></a>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+<div>
+    <div>
+        <canvas id="myChart" height="500" width="800"></canvas>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".row", function (event) {
+            //event.preventDefault();
+            var me = $(this);
+            var symbol = me.data("symbol");
+            });
+    });
+      alertDbSave(@ViewBag.dbSuccessChart);
+</script>

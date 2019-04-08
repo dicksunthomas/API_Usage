@@ -1,0 +1,88 @@
+﻿
+<hr />
+<h1 align="center"><b><u></b>IEX Trading Application</b></u></h1>
+<h3 align="center">
+    <i>
+        IEX Group operates the Investors Exchange (IEX), a stock exchange for U.S. equities that is built for investors and companies.
+        This application will help users to get data related to trading as mentioned below
+    </i>
+</h3>
+<ol>
+    <h2>Buy/Sell</h2>
+    <p>
+        As a part of this project we are trying to classify companies which top performing stocks. Here we are
+        using listed API’s to fetch data and run a logic to find the top companies for stock investments. A simple
+        way to measure price momentum is to consider the proximity of a stock to its 52-week high or low.
+        The formula I used for this was current price minus 52-week low divided by 52-week high minus 52-week low.
+        Stocks that score 82% or higher on this formula tend to outperform, while stocks that score 41% or lower tend to underperform.
+    </p>
+    <p>
+        For this we have used an api which is a batch request to get the stats of all the 8737 companies using the api and we apply the above mentioned logic on the data</br>
+        api: https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbols + "&types=quote&filter=symbol,companyName,close,week52High,week52Low";
+        </br> table: <span style="font-weight:bolder">stockSuggest</span>
+    </p>
+    <h2>Top Gainers</h2>
+    <p>
+        This API provides the top gainers in the stock market.
+        </br> api: https://api.iextrading.com/1.0/stock/market/collection/sector?collectionName=Health%20Care
+        </br> table: <span style="font-weight:bolder">GainersList</span>
+    </p>
+    <h2>Sector Performance</h2>
+    <p>
+        This gives us the sector wise information as well as the list of sectors in the stock market, for example all health care firms are clubbed into one sector.
+        </br>api: https://api.iextrading.com/1.0/stock/market/sector-performance
+        </br>table: <span style="font-weight:bolder">Sector</span>
+    </p>
+    <h2>Sector Specific</h2>
+    <p>
+        This API gets the data of all the companies from a specific sector. We are using collections with sector performance to get the mapping from sector to companies.
+        like for the Health Care Sector we use the below api.
+        </br> api: https://api.iextrading.com/1.0/stock/market/collection/sector?collectionName=Health%20Care
+    </p>
+    <h2>Financials</h2>
+    <p>
+        This gives us the quarterly data of companies such as current assets total revenue and shareholder equity etc for all the companies.
+        Like for the company Apple we use the below api.
+        </br> api: https://api.iextrading.com/1.0/stock/aapl/financials
+        </br> table: <span style="font-weight:bolder">FinancialList</span>
+
+    </p>
+</ol>
+<hr />
+<center>
+    <h2>Team members</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Information
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Aashish Kakar
+                </td>
+                <td>MS BAIS Fall 2018 - Fall 2019</td>
+            </tr>
+            <tr>
+                <td>
+                    Karthik Sudharshan
+                </td>
+                <td>MS BAIS Fall 2018 - Fall 2019</td>
+            </tr>
+            <tr>
+                <td>
+                    Dicksun Thomas
+                </td>
+                <td>MS BAIS Fall 2018 - Fall 2019</td>
+            </tr>
+        </tbody>
+    </table>
+</center>
+<hr />
+<a href="https://github.com/Purva26-Koregave/API_Usage">Link to the GitHub repository for the application</a>
