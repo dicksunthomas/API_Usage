@@ -6,7 +6,9 @@
 }
 
 <h2 style="text-decoration:underline">Financials</h2>
-
+<p>
+    Quaterly financial report
+</p>
 <form asp-controller="Home" asp-action="financials" method="get">
     <select id="dd1" name="symbol">
         @foreach (var company in Model.company)
