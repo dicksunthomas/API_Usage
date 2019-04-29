@@ -4,10 +4,9 @@
   ViewData["Title"] = "Quote";
 }
 
-<h2>Chart</h2>
+<h2 style="text-decoration:underline">Chart</h2>
 <h4>Run symbols and save data if the drop down list is empty</h4>
 <hr />
-
 <form asp-controller="Home" asp-action="Chart" method="get">
   <select name="symbol">
     @foreach (var company in Model.Companies)

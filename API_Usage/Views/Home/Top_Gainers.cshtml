@@ -4,10 +4,10 @@
     ViewData["Title"] = "Gainers";
 }
 
-<h2>Top_Gainers</h2>
+<h2 style="text-decoration:underline">Top Gainers</h2>
 
 
-<table class="table">
+<table class="table" style="border:dotted">
     <thead>
         <tr>
                 <th>
@@ -76,13 +76,11 @@
 
             </tr>
         }
-        <tr>
-            <td>
-                <a id="dbopt" asp-controller="Home" asp-action="PopulateGainer"><img src="~/img/button_save-data.png" /></a>
-            </td>
-        </tr>
     </tbody>
 </table>
+<div style="padding:5px">
+    <a id="dbopt" asp-controller="Home" asp-action="PopulateGainer"><img src="~/img/button_save-data.png" /></a>
+</div>
 <script>
     alertDbSave(@ViewBag.dbSuccessComp);
 </script>

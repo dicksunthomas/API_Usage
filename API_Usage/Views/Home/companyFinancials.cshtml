@@ -1,23 +1,35 @@
 ﻿@model API_Usage.Models.financialData
 
 @{
-    ViewData["Title"] = "companyFinancials";
+
+    ViewData["Title"] = "Financials";
 }
 
-<h2>companyFinancials</h2>
+<h2 style="text-decoration:underline">Financials</h2>
 
 <form asp-controller="Home" asp-action="financials" method="get">
-    <select name="symbol">
+    <select id="dd1" name="symbol">
         @foreach (var company in Model.company)
         {
-            <option value=@company.symbol selected>@company.name</option>
+            <option value=@company.symbol>@company.name</option>
             
         }
     </select>
     <input type="submit" value="Submit" />
 </form>
-<table class="table">
+<table class="table"style="border:dotted">
     <thead>
+        @foreach (var item in Model.company)
+        {
+            if (item.symbol == Model.finance.symbol)
+            {
+                <tr>
+                    <td style="font-size:larger;text-decoration:underline">
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+                </tr>
+            }
+        }
         <tr id="title" data-sec="@ViewData["Secto"]">
         <tr>
             <th>Gross Profit</th>
@@ -32,6 +44,7 @@
     <tbody>
         @if (Model.finance.financials!=null)
         {
+        
         @foreach (var itemI in Model.finance.financials)
         {
             <tr>
@@ -62,14 +75,11 @@
             </tr>
         }
         }
-        <tr>
-            <td>
-                <a id="dbopt" asp-controller="Home" asp-action="PopulateFinancial"><img src="~/img/button_save-data.png" /></a>
-            </td>
-        </tr>
     </tbody>
     </table>
+<div style="padding:5px">
+    <a id="dbopt" asp-controller="Home" asp-action="PopulateFinancial"><img src="~/img/button_save-data.png" /></a>
+</div>
 <script>
-    alertDbSave(@ViewBag.dbSuccessChart);
-
+    alertDbSave(@ViewBag.dbSuccessComp);
 </script>

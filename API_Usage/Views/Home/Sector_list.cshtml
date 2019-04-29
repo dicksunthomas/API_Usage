@@ -4,19 +4,19 @@
     ViewData["Title"] = "Sector_list";
 }
 
-<h2>Sector_list</h2>
+<h2 style="text-decoration:underline">Sector Performance</h2>
 
 
-<table class="table">
+<table class="table" style="border:dotted">
     <thead>
         <tr>
                 
                 
                 <th>
-                    @Html.DisplayNameFor(model => model.name)
+                   Sector
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.performance)
+                    Performance Change
                 </th>
                 
             <th></th>
@@ -31,19 +31,18 @@
                 @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.performance)
+                @Html.DisplayFor(modelItem => item.performanceS)
             </td>
            
            
         </tr>
 }
-         <tr>
-      <td>
-        <a id="dbopt" asp-controller="Home" asp-action="PopulateSector"><img src="~/img/button_save-data.png" /></a>
-      </td>
-             </tr>
+              
     </tbody>
 </table>
+<div style="padding:5px">
+    <a id="dbopt" asp-controller="Home" asp-action="PopulateSector"><img src="~/img/button_save-data.png" /></a>
+</div>
 <script>
     alertDbSave(@ViewBag.dbSuccessComp);
 </script>

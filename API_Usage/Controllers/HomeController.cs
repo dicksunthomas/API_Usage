@@ -120,7 +120,7 @@ namespace API_Usage.Controllers
                 // https://stackoverflow.com/a/46280739
                 //JObject result = JsonConvert.DeserializeObject<JObject>(companyList);
                 companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
-                companies = companies.GetRange(0, 50);
+                companies = companies.GetRange(0, 20);
             }
 
             return companies;
@@ -150,7 +150,7 @@ namespace API_Usage.Controllers
                 companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
                
             }
-
+            response.Content.Dispose();
             return companies;
         }
 
@@ -192,7 +192,7 @@ namespace API_Usage.Controllers
             {
                 Equity.symbol = symbol;
             }
-
+            response.Content.Dispose();
             return Equities;
         }
         /// <summary>
@@ -342,6 +342,7 @@ namespace API_Usage.Controllers
                 {
                     iter = end - companies.Count;
                 }
+                response.Content.Dispose();
             }
             return statsList;
         }
@@ -361,7 +362,7 @@ namespace API_Usage.Controllers
                 value.close = i.close;
                 if ((i.week52High - i.week52Low) != 0)
                 {
-                    value.value = ((i.close - i.week52Low) / (i.week52High - i.week52Low));
+                    value.value = ((i.close - i.week52Low) / (i.week52High - i.week52Low))*100;
                 }
                 statsList.Add(value);
                 // statsResult = statsList.Where(a => a.value > 0.82).ToList();
@@ -388,7 +389,7 @@ namespace API_Usage.Controllers
                     }
 
                     item.companyName = companyName.companyName;
-
+                    response.Content.Dispose();
                 }
             }
             return statsResult.OrderByDescending(a => a.value).ToList();
@@ -399,7 +400,7 @@ namespace API_Usage.Controllers
             ViewBag.dbSucessComp = 0;
 
             List<GainersList> gainerList = getGainers();
-            TempData["Gainer"] = JsonConvert.SerializeObject(gainerList);
+            TempData["Gainer"] = JsonConvert.SerializeObject(gainerList.Take(5));
             return View("Top_Gainers",gainerList);
         }
         public List<GainersList> getGainers()
@@ -422,26 +423,30 @@ namespace API_Usage.Controllers
                 List<GainersList> gL = JsonConvert.DeserializeObject<List<GainersList>>(gList, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 gainersList = gL;
             }
+            response.Content.Dispose();
+           
             return gainersList;
-        }
-        public IActionResult Sector(string sector)
-        {
-            sectorData sectorList = new sectorData();
-            
-            sectorList.SectorL = getSector();
-            if (sector != null)
-            {
-                sectorList.Gain = getSectorStock(sector);
-            }
-            else
-            {
-            sectorList.Gain = getSectorStock("Health%20Care");
-            }
-            TempData["Sector"] = JsonConvert.SerializeObject(sectorList.Gain.Take(10));
-            return View("Sector_Stock_Data", sectorList);
-            
             
         }
+        //public IActionResult Sector(string sector)
+        //{
+        //    sectorData sectorList = new sectorData();
+            
+        //    sectorList.SectorL = getSector();
+        //    if (sector != null)
+        //    {
+        //        sectorList.Gain = getSectorStock(sector);
+        //    }
+        //    else
+        //    {
+        //    sectorList.Gain = getSectorStock("Health%20Care");
+        //    }
+        //    TempData["Sector"] = JsonConvert.SerializeObject(sectorList.Gain.Take(10));
+        //    sectorList.Gain = sectorList.Gain.Take(10).ToList();
+        //    return View("Sector_Stock_Data", sectorList);
+            
+            
+        //}
         public IActionResult SectorList()
         {
             ViewBag.dbSucessComp = 0;
@@ -453,6 +458,7 @@ namespace API_Usage.Controllers
         public IActionResult PopulateSector()
         {
             List<Sector> sector = JsonConvert.DeserializeObject<List<Sector>>(TempData["Sector"].ToString());
+            TempData.Keep("Sector");
             foreach (Sector item in sector)
             {
 
@@ -469,24 +475,30 @@ namespace API_Usage.Controllers
         }
         public IActionResult PopulateStock()
         {
-            List<outputModel> output = JsonConvert.DeserializeObject<List<outputModel>>(TempData["BuyOrSell"].ToString());
-            foreach (outputModel item in output)
-            {
+           
+                List<outputModel> output = JsonConvert.DeserializeObject<List<outputModel>>(TempData["BuyOrSell"].ToString());
+                TempData.Keep("BuyOrSell");
 
-                //Database will give PK constraint violation error when trying to insert record with existing PK.
-                //So add company only if it doesnt exist, check existence using symbol (PK)
-                if (dbContext.stockSuggest.Where(c => c.companyName.Equals(item.companyName)).Count() == 0)
+            foreach (outputModel item in output)
                 {
-                    dbContext.stockSuggest.Add(item);
+
+                    //Database will give PK constraint violation error when trying to insert record with existing PK.
+                    //So add company only if it doesnt exist, check existence using symbol (PK)
+                    if (dbContext.stockSuggest.Where(c => c.companyName.Equals(item.companyName)).Count() == 0)
+                    {
+                        dbContext.stockSuggest.Add(item);
+                    }
                 }
-            }
-            dbContext.SaveChanges();
-            ViewBag.dbSuccessComp = 1;
-            return View("BuyOrSell", output);
+                dbContext.SaveChanges();
+                ViewBag.dbSuccessComp = 1;
+                return View("BuyOrSell", output);
+            
+           
         }
         public IActionResult PopulateFinancial()
         {
             financialData finance = JsonConvert.DeserializeObject<financialData>(TempData["Financial"].ToString());
+            TempData.Keep("Financial");
             foreach (Company item in finance.company)
             {
 
@@ -504,6 +516,7 @@ namespace API_Usage.Controllers
         public IActionResult PopulateGainer()
         {
             List<GainersList> gainer = JsonConvert.DeserializeObject<List<GainersList>>(TempData["Gainer"].ToString());
+            TempData.Keep("Gainer");
             foreach (GainersList item in gainer)
             {
 
@@ -538,30 +551,32 @@ namespace API_Usage.Controllers
                 sectorList = JsonConvert.DeserializeObject<List<Sector>>(sList, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 
             }
+            response.Content.Dispose();
             return sectorList;
         }
-        public List<GainersList> getSectorStock(string sector)
-        {
-            string IEXTrading_API_PATH = BASE_URL + "stock/market/collection/sector?collectionName="+sector;
-            string gList = "";
-            List<GainersList> sectorStock = null;
+        //public List<GainersList> getSectorStock(string sector)
+        //{
+        //    string IEXTrading_API_PATH = BASE_URL + "stock/market/collection/sector?collectionName="+sector;
+        //    string gList = "";
+        //    List<GainersList> sectorStock = null;
 
-            // connect to the IEXTrading API and retrieve information
-            //httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
-            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+        //    // connect to the IEXTrading API and retrieve information
+        //    //httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+        //    HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
 
-            // read the Json objects in the API response
-            if (response.IsSuccessStatusCode)
-            {
-                gList = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
-            if (!gList.Equals(""))
-            {
-                sectorStock = JsonConvert.DeserializeObject<List<GainersList>>(gList, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+        //    // read the Json objects in the API response
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        gList = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        //    }
+        //    if (!gList.Equals(""))
+        //    {
+        //        sectorStock = JsonConvert.DeserializeObject<List<GainersList>>(gList, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 
-            }
-            return sectorStock;
-        }
+        //    }
+        //    response.Content.Dispose();
+        //    return sectorStock;
+        //}
         public IActionResult financials(string symbol)
         {
             ViewBag.dbSucessComp = 0;
@@ -614,6 +629,7 @@ namespace API_Usage.Controllers
             {
                 finance = JsonConvert.DeserializeObject<FinancialList>(fList, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             }
+            response.Content.Dispose();
             return finance;
         }
         /// <summary>
@@ -628,6 +644,7 @@ namespace API_Usage.Controllers
             //  in the symbols method. This example has been structured to demonstrate one way to save object data
             //  and retrieve it later
             List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(TempData["Companies"].ToString());
+            TempData.Keep("Companies");
 
             foreach (Company company in companies)
             {
@@ -656,6 +673,11 @@ namespace API_Usage.Controllers
                 //First remove equities and then the companies
                 dbContext.Equities.RemoveRange(dbContext.Equities);
                 dbContext.Companies.RemoveRange(dbContext.Companies);
+                dbContext.Financial.RemoveRange(dbContext.Financial);
+                dbContext.FinancialList.RemoveRange(dbContext.FinancialList);
+                dbContext.GainersList.RemoveRange(dbContext.GainersList);
+                dbContext.Sector.RemoveRange(dbContext.Sector);
+                dbContext.stockSuggest.RemoveRange(dbContext.stockSuggest);
             }
             else if ("Companies".Equals(tableToDel))
             {
@@ -678,6 +700,7 @@ namespace API_Usage.Controllers
             }
             else if ("Financial".Equals(tableToDel))
             {
+                dbContext.Financial.RemoveRange(dbContext.Financial);
                 dbContext.FinancialList.RemoveRange(dbContext.FinancialList);
             }
             else if ("Buy/Sell".Equals(tableToDel))

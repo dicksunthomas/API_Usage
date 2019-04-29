@@ -1,7 +1,7 @@
 ﻿@model API_Usage.Models.sectorData
 
 @{
-    foreach(var item in Model.Gain)
+    foreach (var item in Model.Gain)
     {
         ViewData["Secto"] = item.sector;
         break;
@@ -9,7 +9,7 @@
     ViewData["Title"] = "Sector_Stock_Data";
 }
 
-<h2>Sector_Stock_Data</h2>
+<h2>Sector Specific Stock Data</h2>
 <form asp-controller="Home" asp-action="Sector" method="get">
     <select name="Sector">
         @foreach (var company in Model.SectorL)
@@ -20,11 +20,10 @@
     </select>
     <input type="submit" value="Submit" />
 </form>
-<table class="table">
+
+<table class="table" style="border:dotted">
     <thead>
-        <tr id="title" data-sec="@ViewData["Secto"]">
-          
-        </tr>
+        <tr id="title" style="border-style:dashed;font-size:large" data-sec="@ViewData["Secto"]"></tr>
         <tr>
             <th>
                 Company
@@ -71,17 +70,13 @@
                 </td>
             </tr>
         }
-        <tr>
-            <td>
-                <a id="dbopt" asp-controller="Home" asp-action="PopulateSector"><img src="~/img/button_save-data.png" /></a>
-            </td>
-        </tr>
+
     </tbody>
 </table>
 <script>
     $(document).ready(function () {
         $('#title').each(function () {
-            
+
             var me = $(this);
             var sel = me.data("sec");
             if (sel == "Consumer Defensive")
@@ -100,9 +95,9 @@
             $('.selector').each(function () {
                 if ($(this).text() == me1)
                     $(this).attr("selected", "selected");
-      
+
             });
         });
-     });  
+     });
     alertDbSave(@ViewBag.dbSuccessChart);
 </script>

@@ -139,12 +139,12 @@ namespace API_Usage.Models
         public float? change { get; set; }
         public float? changePercent { get; set; }
         public float? iexMarketPercent { get; set; }
-        public int? iexVolume { get; set; }
-        public int avgTotalVolume { get; set; }
-        public int? iexBidPrice { get; set; }
-        public int? iexBidSize { get; set; }
-        public int? iexAskPrice { get; set; }
-        public int? iexAskSize { get; set; }
+        public float? iexVolume { get; set; }
+        public float avgTotalVolume { get; set; }
+        public float? iexBidPrice { get; set; }
+        public float? iexBidSize { get; set; }
+        public float? iexAskPrice { get; set; }
+        public float? iexAskSize { get; set; }
         public long? marketCap { get; set; }
         public float? peRatio { get; set; }
         public float week52High { get; set; }
@@ -161,6 +161,7 @@ namespace API_Usage.Models
         public string name { get; set; }
         public float performance { get; set; }
         public long lastUpdated { get; set; }
+        public string performanceS { get { return performance.ToString() + "%"; } }
     }
 
     public class News
@@ -217,6 +218,7 @@ namespace API_Usage.Models
         public string symbol { get; set; }
         public float? close { get; set; }
         public float? value { get; set; }
+        public string valueS { get { return value.ToString() + "%"; } }
     }
 
     public class chartsoutput

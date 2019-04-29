@@ -5,9 +5,16 @@
     ViewData["Title"] = "Buy Or Sell Stocks";
 }
 
-<h2>BuyOrSell</h2>
+<h2 style="text-decoration:underline">Buy/Sell Stock</h2>
+<p>
+    As a part of this project we are trying to classify companies which top performing stocks. Here we are
+    using listed API’s to fetch data and run a logic to find the top companies for stock investments. A simple
+    way to measure price momentum is to consider the proximity of a stock to its 52-week high or low adjustement prices.
+    The formula I used for this was current price minus 52-week low divided by 52-week high minus 52-week low.
+    Stocks that score 82% or higher on this formula tend to outperform, while stocks that score 41% or lower tend to underperform.
+</p>
 <div>
-    <table class="table">
+    <table class="table" style="border:dotted">
         <thead>
             <tr>
                 <th>
@@ -20,10 +27,7 @@
                     Close
                 </th>
                 <th>
-                    Value
-                </th>
-                <th>
-                    Chart
+                    Score
                 </th>
             </tr>
         </thead>
@@ -42,31 +46,27 @@
                         @Html.DisplayFor(modelItem => item.close)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.value)
+                        @Html.DisplayFor(modelItem => item.valueS)
                     </td>
                 </tr>
             }
-            <tr>
-                <td>
-                    <a id="dbopt" asp-controller="Home" asp-action="PopulateStock"><img src="~/img/button_save-data.png" /></a>
-                </td>
-            </tr>
+           
         </tbody>
 
     </table>
-</div>
-<div>
-    <div>
-        <canvas id="myChart" height="500" width="800"></canvas>
+    <div style="padding:5px">
+        <a id="dbopt" asp-controller="Home" asp-action="PopulateStock"><img src="~/img/button_save-data.png" /></a>
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $(document).on("click", ".row", function (event) {
-            //event.preventDefault();
-            var me = $(this);
-            var symbol = me.data("symbol");
-            });
-    });
-      alertDbSave(@ViewBag.dbSuccessChart);
+    //$(document).ready(function () {
+    //    $(document).on("click", ".row", function (event) {
+    //        //event.preventDefault();
+    //        var me = $(this);
+    //        var symbol = me.data("symbol");
+    //    });
+    //});
+    
+    alertDbSave(@ViewBag.dbSuccessComp);
+
 </script>
