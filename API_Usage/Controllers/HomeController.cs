@@ -595,11 +595,7 @@ namespace API_Usage.Controllers
                  
                 
                     TempData["Financial"] = JsonConvert.SerializeObject(vfinancial);
-                    return View("companyFinancials", vfinancial);
-                
-               
-               
-                
+                    return View("companyFinancials", vfinancial);      
             }
             catch(Exception)
             {
